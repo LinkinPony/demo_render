@@ -48,7 +48,7 @@ void Drawer::Line(int x0, int y0, int x1, int y1,const TGAColor & color) {
 //        }
 //    }
 //}
-Vec3f Drawer::Barycentric(const Vec2i (&vertex)[3],const Vec2i & P){
+Vec3f Drawer::Barycentric(const Vec3i (&vertex)[3],const Vec2i & P){
     Vec3f result =  //cal cross
             Vec3f(vertex[1].x - vertex[0].x,vertex[2].x - vertex[0].x,vertex[0].x - P.x) ^
             Vec3f(vertex[1].y - vertex[0].y,vertex[2].y - vertex[0].y,vertex[0].y - P.y);
@@ -56,7 +56,7 @@ Vec3f Drawer::Barycentric(const Vec2i (&vertex)[3],const Vec2i & P){
     result.x /= result.z,result.y /= result.z;
     return {(float)1.0 - result.x - result.y,result.x,result.y};
 }
-void Drawer::Triangle(const Vec2i (&vertex)[3],const TGAColor & color,int * zbuffer) {
+void Drawer::Triangle(const Vec3i (&vertex)[3],const TGAColor & color,double * zbuffer) {
     const double eps = -1e-6;
     int lx = std::max(std::min({vertex[0].x,vertex[1].x,vertex[2].x}),0),rx = std::min(std::max({vertex[0].x,vertex[1].x,vertex[2].x}),get_width()-1);
     int ly = std::max(std::min({vertex[0].y,vertex[1].y,vertex[2].y}),0),ry = std::min(std::max({vertex[0].y,vertex[1].y,vertex[2].y,}),get_height()-1);
@@ -65,11 +65,14 @@ void Drawer::Triangle(const Vec2i (&vertex)[3],const TGAColor & color,int * zbuf
             Vec3f bary = Barycentric(vertex,Vec2i(x,y));
             if(bary.x < eps or bary.y < eps or bary.z < eps)continue;
             int idx = x + y * get_width();
-            int z = bary.x * y + bary.y * y + bary.z * y;
+            double z = bary.x * vertex[0].z + bary.y * vertex[1].z + bary.z * vertex[2].z;
             if(zbuffer[idx] < z){
                 zbuffer[idx] = z;
                 set(x,y,color);
             }
         }
     }
+}
+Vec3i Drawer::world2screen(Vec3f v) {
+    return Vec3i(int((v.x+1.)*width/2.+.5), int((v.y+1.)*height/2.+.5), v.z);
 }

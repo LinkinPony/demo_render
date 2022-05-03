@@ -11,11 +11,13 @@ public:
     void Line(int x0,int y0,int x1,int y1,const TGAColor & color);
     //Draw a line between (x0,y0) and (x1,y1) use color
 
-    void Triangle(const Vec2i (&vertex)[3],const TGAColor & color,int * zbuffer);
+    void Triangle(const Vec3i (&vertex)[3],const TGAColor & color,double * zbuffer);
     //Draw a triangle defined by vertex t0,t1,t2
 
-    static Vec3f Barycentric(const Vec2i (&vertex)[3],const Vec2i & P);
+    static Vec3f Barycentric(const Vec3i (&vertex)[3],const Vec2i & P);
     //Calculate barycentric of P in triangle defined by vertex[3]
+
+    Vec3i world2screen(Vec3f v);
 };
 
 #endif //__DRAWER_H__

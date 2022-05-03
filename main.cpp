@@ -9,7 +9,7 @@ const TGAColor red   = TGAColor(255, 0,   0,   100);
 const TGAColor green = TGAColor(0  , 128, 0,   100);
 int main(int argc, char** argv) {
     int width = 2000,height = 2000;
-    int * zbuffer = new int[width*height];
+    double * zbuffer = new double[width*height];
     std::fill(zbuffer,zbuffer+width*height,INT_MIN);
     Drawer drawer = Drawer(width,height, TGAImage::RGB);
     Model * model = new Model("african_head.obj");
@@ -17,18 +17,18 @@ int main(int argc, char** argv) {
 
     for (int i=0; i<model->nfaces(); i++) {
         std::vector<int> face = model->face(i);
-        Vec2i screen_coords[3];
+        Vec3i screen_coords[3];
         Vec3f world_coords[3];
         for (int j=0; j<3; j++) {
             Vec3f v = model->vert(face[j]);
-            screen_coords[j] = Vec2i((v.x+1.)*width/2., (v.y+1.)*height/2.);
+            screen_coords[j] = drawer.world2screen(v);
             world_coords[j]  = v;
         }
         Vec3f n = (world_coords[2]-world_coords[0])^(world_coords[1]-world_coords[0]);
         n.normalize();
         float intensity = n*light_dir;
         if (intensity>0) {
-            Vec2i ver[3] = {screen_coords[0], screen_coords[1], screen_coords[2]};
+            Vec3i ver[3] = {screen_coords[0], screen_coords[1], screen_coords[2]};
             drawer.Triangle(ver, TGAColor(intensity*255, intensity*255, intensity*255, 255),zbuffer);
         }
     }
