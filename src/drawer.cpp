@@ -56,14 +56,20 @@ Vec3f Drawer::Barycentric(const Vec2i (&vertex)[3],const Vec2i & P){
     result.x /= result.z,result.y /= result.z;
     return {(float)1.0 - result.x - result.y,result.x,result.y};
 }
-void Drawer::Triangle(const Vec2i (&vertex)[3],const TGAColor & color) {
+void Drawer::Triangle(const Vec2i (&vertex)[3],const TGAColor & color,int * zbuffer) {
+    const double eps = -1e-6;
     int lx = std::max(std::min({vertex[0].x,vertex[1].x,vertex[2].x}),0),rx = std::min(std::max({vertex[0].x,vertex[1].x,vertex[2].x}),get_width()-1);
     int ly = std::max(std::min({vertex[0].y,vertex[1].y,vertex[2].y}),0),ry = std::min(std::max({vertex[0].y,vertex[1].y,vertex[2].y,}),get_height()-1);
     for(int x = lx;x <= rx;x++){
         for(int y = ly;y <= ry;y++){
             Vec3f bary = Barycentric(vertex,Vec2i(x,y));
-            bool out = (bary.x < 0 or bary.y < 0 or bary.z < 0);
-            if(!out)set(x,y,color);
+            if(bary.x < eps or bary.y < eps or bary.z < eps)continue;
+            int idx = x + y * get_width();
+            int z = bary.x * y + bary.y * y + bary.z * y;
+            if(zbuffer[idx] < z){
+                zbuffer[idx] = z;
+                set(x,y,color);
+            }
         }
     }
 }
