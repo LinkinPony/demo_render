@@ -2,8 +2,7 @@
 #define __GEOMETRY_H__
 
 #include <cmath>
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
 
 template <class t> struct Vec2 {
 	union {
@@ -39,9 +38,9 @@ template <class t> struct Vec3 {
 	template <class > friend std::ostream& operator<<(std::ostream& s, Vec3<t>& v);
 };
 
-typedef Vec2<double> Vec2f;
+typedef Vec2<float> Vec2f;
 typedef Vec2<int>   Vec2i;
-typedef Vec3<double> Vec3f;
+typedef Vec3<float> Vec3f;
 typedef Vec3<int>   Vec3i;
 
 template <class t> std::ostream& operator<<(std::ostream& s, Vec2<t>& v) {

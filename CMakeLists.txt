@@ -10,4 +10,4 @@ add_executable(demo_render
         include/drawer.h src/drawer.cpp
         include/model.h src/model.cpp
         include/geometry.h
-        )
+        include/matrix.h include/transform.h include/include_all.h src/transform.cpp src/matrix.cpp)
