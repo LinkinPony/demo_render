@@ -14,6 +14,9 @@ namespace ShaderGlobal{
     extern float depth;//for z-buffer
     extern TGAColor texture_color;
     extern TGAColor output_color;
+    extern Vec3f light_position;
+    extern Vec3f eye_position;
+    extern float light_intensity;
 };
 
 #endif //__SHADER_GLOBAL_H__

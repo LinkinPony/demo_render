@@ -2,6 +2,7 @@
 #define __IMAGE_H__
 
 #include <fstream>
+#include <cmath>
 
 #pragma pack(push,1)
 struct TGA_Header {
@@ -58,10 +59,13 @@ struct TGAColor {
 		return *this;
 	}
     TGAColor operator * (float x) const{
-        return TGAColor(b * x,g * x,r * x,a * x);
+        return TGAColor(fmin(255.0,r * x),fmin(255.0,g * x),fmin(255.0,b * x),fmin(255.0,a * x));
+    }
+    friend std::ostream & operator << (std::ostream & s, TGAColor & v) {
+        s << "(R:" << (int)v.r << ", G:" << (int)v.g << ", B:" << (int)v.b << ", A:" << (int)v.a << ")\n";
+        return s;
     }
 };
-
 
 class TGAImage {
 protected:

@@ -9,4 +9,7 @@ namespace ShaderGlobal{
     float depth = 0;//for z-buffer
     TGAColor texture_color;
     TGAColor output_color;
+    Vec3f light_position;
+    Vec3f eye_position;
+    float light_intensity;
 }
