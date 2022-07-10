@@ -13,7 +13,7 @@ template <class T> class Matrix{
 public:
     vector<vector<T> > A;
     int n,m;
-
+    Matrix(){}
     Matrix(int _n,int _m):n(_n),m(_m){
         A = vector<vector<T>>(n,vector<T>(m,0));
     }

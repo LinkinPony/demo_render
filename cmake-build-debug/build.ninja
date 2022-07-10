@@ -73,14 +73,32 @@ build CMakeFiles/demo_render.dir/src/model.cpp.obj: CXX_COMPILER__demo_render_De
   OBJECT_DIR = CMakeFiles\demo_render.dir
   OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
 
+build CMakeFiles/demo_render.dir/src/matrix.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/matrix.cpp || cmake_object_order_depends_target_demo_render
+  DEP_FILE = CMakeFiles\demo_render.dir\src\matrix.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\demo_render.dir
+  OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
+
 build CMakeFiles/demo_render.dir/src/transform.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/transform.cpp || cmake_object_order_depends_target_demo_render
   DEP_FILE = CMakeFiles\demo_render.dir\src\transform.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\demo_render.dir
   OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
 
-build CMakeFiles/demo_render.dir/src/matrix.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/matrix.cpp || cmake_object_order_depends_target_demo_render
-  DEP_FILE = CMakeFiles\demo_render.dir\src\matrix.cpp.obj.d
+build CMakeFiles/demo_render.dir/src/shader.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/shader.cpp || cmake_object_order_depends_target_demo_render
+  DEP_FILE = CMakeFiles\demo_render.dir\src\shader.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\demo_render.dir
+  OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
+
+build CMakeFiles/demo_render.dir/src/geometry.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/geometry.cpp || cmake_object_order_depends_target_demo_render
+  DEP_FILE = CMakeFiles\demo_render.dir\src\geometry.cpp.obj.d
+  FLAGS = -g -std=gnu++14
+  OBJECT_DIR = CMakeFiles\demo_render.dir
+  OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
+
+build CMakeFiles/demo_render.dir/src/shaderGlobal.cpp.obj: CXX_COMPILER__demo_render_Debug E$:/Github/demo_render/src/shaderGlobal.cpp || cmake_object_order_depends_target_demo_render
+  DEP_FILE = CMakeFiles\demo_render.dir\src\shaderGlobal.cpp.obj.d
   FLAGS = -g -std=gnu++14
   OBJECT_DIR = CMakeFiles\demo_render.dir
   OBJECT_FILE_DIR = CMakeFiles\demo_render.dir\src
@@ -93,7 +111,7 @@ build CMakeFiles/demo_render.dir/src/matrix.cpp.obj: CXX_COMPILER__demo_render_D
 #############################################
 # Link the executable demo_render.exe
 
-build demo_render.exe: CXX_EXECUTABLE_LINKER__demo_render_Debug CMakeFiles/demo_render.dir/main.cpp.obj CMakeFiles/demo_render.dir/src/tgaimage.cpp.obj CMakeFiles/demo_render.dir/src/drawer.cpp.obj CMakeFiles/demo_render.dir/src/model.cpp.obj CMakeFiles/demo_render.dir/src/transform.cpp.obj CMakeFiles/demo_render.dir/src/matrix.cpp.obj
+build demo_render.exe: CXX_EXECUTABLE_LINKER__demo_render_Debug CMakeFiles/demo_render.dir/main.cpp.obj CMakeFiles/demo_render.dir/src/tgaimage.cpp.obj CMakeFiles/demo_render.dir/src/drawer.cpp.obj CMakeFiles/demo_render.dir/src/model.cpp.obj CMakeFiles/demo_render.dir/src/matrix.cpp.obj CMakeFiles/demo_render.dir/src/transform.cpp.obj CMakeFiles/demo_render.dir/src/shader.cpp.obj CMakeFiles/demo_render.dir/src/geometry.cpp.obj CMakeFiles/demo_render.dir/src/shaderGlobal.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\demo_render.dir

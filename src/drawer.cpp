@@ -2,7 +2,6 @@
 #include <algorithm>
 #include <tuple>
 #include "../include/drawer.h"
-const float eps = 1e-6;
 void Drawer::Line(int x0, int y0, int x1, int y1,const TGAColor & color) {
     bool flip = 0;
     if(abs(x0 - x1) < abs(y0 - y1)){
@@ -25,15 +24,8 @@ void Drawer::Line(int x0, int y0, int x1, int y1,const TGAColor & color) {
         else set(y,x,color);
     }
 }
-Vec3f Drawer::Barycentric(const Vec3f (&vertex)[3],const Vec2i & P){
-    Vec3f result =  //cal cross
-            Vec3f(vertex[1].x - vertex[0].x,vertex[2].x - vertex[0].x,vertex[0].x - P.x) ^
-            Vec3f(vertex[1].y - vertex[0].y,vertex[2].y - vertex[0].y,vertex[0].y - P.y);
-    if(abs(result.z) < 1)return Vec3f(-1,1,1);
-    result.x /= result.z,result.y /= result.z;
-    return {(float)1.0 - result.x - result.y,result.x,result.y};
-}
-void Drawer::Triangle(const Vec3f (&vertex)[3],const TGAColor & color,float * zbuffer) {
+void Drawer::Triangle(int iface,Shader * shader,float * zbuffer) {
+    Vec3f * vertex = ShaderGlobal::varying_vertex;
     int lx = std::max(std::min({vertex[0].x,vertex[1].x,vertex[2].x}),0.f);
     int rx = std::min(std::max({vertex[0].x,vertex[1].x,vertex[2].x}),get_width()-1.f);
     int ly = std::max(std::min({vertex[0].y,vertex[1].y,vertex[2].y}),0.f);
@@ -41,16 +33,12 @@ void Drawer::Triangle(const Vec3f (&vertex)[3],const TGAColor & color,float * zb
     int width = get_width();
     for(int x = lx;x <= rx;x++){
         for(int y = ly;y <= ry;y++){
-            Vec3f bary = Barycentric(vertex,Vec2i(x,y));
-            if(bary.x < -eps or bary.y < -eps or bary.z < -eps)continue;
+            bool skip = shader->fragment(x,y);
+            if(skip)continue;
             int idx = x + y * width;
-            double z = bary.x * (float)vertex[0].z + bary.y * (float)vertex[1].z + bary.z * (float)vertex[2].z;
-//            std::cout << bary << std::endl;
-//            std::cout << vertex[0].z << " " << vertex[1].z << " " << vertex[2].z << std::endl;
-//            std::cout << z << std::endl;
-            if(zbuffer[idx] < z){
-                zbuffer[idx] = z;
-                set(x,y,color);
+            if(zbuffer[idx] > ShaderGlobal::depth){
+                zbuffer[idx] = ShaderGlobal::depth;
+                set(x,y,ShaderGlobal::output_color);
             }
         }
     }

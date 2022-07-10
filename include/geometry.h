@@ -3,7 +3,6 @@
 
 #include <cmath>
 #include <iostream>
-
 template <class t> struct Vec2 {
 	union {
 		struct {t u, v;};
@@ -52,5 +51,5 @@ template <class t> std::ostream& operator<<(std::ostream& s, Vec3<t>& v) {
 	s << "(" << v.x << ", " << v.y << ", " << v.z << ")\n";
 	return s;
 }
-
+Vec3f Barycentric(const Vec3f (&vertex)[3],const Vec2i & P);
 #endif //__GEOMETRY_H__

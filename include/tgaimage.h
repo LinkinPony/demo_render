@@ -57,6 +57,9 @@ struct TGAColor {
 		}
 		return *this;
 	}
+    TGAColor operator * (float x) const{
+        return TGAColor(b * x,g * x,r * x,a * x);
+    }
 };
 
 
