@@ -26,6 +26,7 @@ struct TGA_Header {
 struct TGAColor {
 	union {
 		struct {
+//            unsigned char a,r,g,b;
 			unsigned char b, g, r, a;
 		};
 		unsigned char raw[4];
@@ -61,6 +62,7 @@ struct TGAColor {
     TGAColor operator * (float x) const{
         return TGAColor(fmin(255.0,r * x),fmin(255.0,g * x),fmin(255.0,b * x),fmin(255.0,a * x));
     }
+    unsigned char operator [](const int & idx) const { return raw[idx]; }
     friend std::ostream & operator << (std::ostream & s, TGAColor & v) {
         s << "(R:" << (int)v.r << ", G:" << (int)v.g << ", B:" << (int)v.b << ", A:" << (int)v.a << ")\n";
         return s;
@@ -69,8 +71,7 @@ struct TGAColor {
 
 class TGAImage {
 protected:
-	unsigned char* data;
-	int width;
+    int width;
 	int height;
 	int bytespp;
 
@@ -93,11 +94,14 @@ public:
 	bool set(int x, int y, TGAColor c);
 	~TGAImage();
 	TGAImage & operator =(const TGAImage &img);
+    TGAImage & operator =(const TGAColor &color);
 	int get_width();
 	int get_height();
 	int get_bytespp();
 	unsigned char *buffer();
 	void clear();
+
+    unsigned char * data;
 };
 
 #endif //__IMAGE_H__

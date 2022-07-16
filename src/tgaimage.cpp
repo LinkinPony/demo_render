@@ -39,6 +39,14 @@ TGAImage & TGAImage::operator =(const TGAImage &img) {
 	}
 	return *this;
 }
+TGAImage & TGAImage::operator =(const TGAColor &color) {
+    for(int i = 0;i < this->width;i++){
+        for(int j = 0;j < this->height;j++){
+            this->set(i,j,color);
+        }
+    }
+    return *this;
+}
 
 bool TGAImage::read_tga_file(const char *filename) {
 	if (data) delete [] data;
@@ -250,7 +258,7 @@ bool TGAImage::unload_rle_data(std::ofstream &out) {
 
 TGAColor TGAImage::get(int x, int y) {
 	if (!data || x<0 || y<0 || x>=width || y>=height) {
-		return TGAColor();
+		return TGAColor(255,255,255,255);
 	}
 	return TGAColor(data+(x+y*width)*bytespp, bytespp);
 }

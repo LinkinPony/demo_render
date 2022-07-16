@@ -2,6 +2,7 @@
 #include <algorithm>
 #include <tuple>
 #include "../include/drawer.h"
+#include "shaderGlobal.h"
 void Drawer::Line(int x0, int y0, int x1, int y1,const TGAColor & color) {
     bool flip = 0;
     if(abs(x0 - x1) < abs(y0 - y1)){
@@ -42,7 +43,4 @@ void Drawer::Triangle(int iface,Shader * shader,float * zbuffer) {
             }
         }
     }
-}
-Vec3i Drawer::world2screen(Vec3f v) {
-    return Vec3i(int((v.x+1.)*width/2.+.5), int((v.y+1.)*height/2.+.5), v.z);
 }

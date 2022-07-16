@@ -16,7 +16,6 @@ public:
     void Triangle(int iface,Shader * shader,float * zbuffer);
     //Draw a triangle defined by vertex t0,t1,t2
 
-    Vec3i world2screen(Vec3f v);
 };
 
 #endif //__DRAWER_H__
