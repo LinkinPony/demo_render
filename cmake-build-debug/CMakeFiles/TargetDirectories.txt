@@ -1,3 +1,0 @@
-E:/Github/demo_render/cmake-build-debug/CMakeFiles/demo_render.dir
-E:/Github/demo_render/cmake-build-debug/CMakeFiles/edit_cache.dir
-E:/Github/demo_render/cmake-build-debug/CMakeFiles/rebuild_cache.dir
