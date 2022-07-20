@@ -5,7 +5,7 @@ using namespace ShaderGlobal;
 void Bling_Phong::vertex(int iface) {
     std::vector<int>face = model->face(iface);
     for(int i = 0;i < 3;i++){
-        varying_vertex[i] = m2v(M * v2m(model->vert(face[i])));
+        varying_vertex[i] = M * model->vert(face[i]);
         varying_uv[i] = model-> uv(iface,i);
         varying_norm[i] = model->normal(iface,i);
     }
@@ -24,7 +24,7 @@ bool Bling_Phong::fragment(int x,int y) {
         cur_position = cur_position + varying_vertex[i] * bary[i];
         cur_norm = cur_norm + varying_norm[i] * bary[i];
     }
-    cur_norm = model->normal(diffuse_uv);
+//    cur_norm = model->normal(diffuse_uv);
     //texture
     texture_color = model->diffuse(diffuse_uv);
     //diffuse light

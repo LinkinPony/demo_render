@@ -1,7 +1,8 @@
 #include "editor.h"
 #ifndef STB_IMAGE_IMPLEMENTATION
     #define STB_IMAGE_IMPLEMENTATION
-    #include "stb_image.h"
+
+#include "stb_image.h"
 #endif
 #include "iostream"
 #include "shaderGlobal.h"
@@ -42,24 +43,23 @@ void Editor::nextFrame() {
     //render next frame.
     TGAColor white = TGAColor(255,255,255,255);
     std::fill(zbuffer,zbuffer+image_width*image_height,1e18);
-//    for(int i = 0;i < image_width;i++){
-//        for(int j = 0;j < image_height;j++)drawer -> set(i,j,white);
-//    }
+    memset(drawer->data,0,sizeof(drawer));
+    for(int i = 0;i < image_width;i++){
+        for(int j = 0;j < image_height;j++)drawer -> set(i,j,white);
+    }
     ShaderGlobal::model = model;
-    Matrix<float> M_model = Matrix<float>::I(4);
+    Mat4f M_model = Mat<4,float>::I();
     M_model[0][0] = M_model[1][1] = M_model[2][2] = 1000;//multiply .obj's coordinate by 500
     M_model[0][3] = 1000,M_model[1][3] = 1000;
     M_model[2][3] = -1000;
     M_model[3][3] = 1;
     int near = -300,far = -10000;
     //camera
-    Vec3f e(0,000,1000);//position
-//    Vec3f c = Vec3f (0,0,0);//Look-at direction
     Vec3f t(0,1,0);//Up direction
-    Matrix<float> M_view = ViewTrans(e,view_direction,t);
-    Matrix<float> M_perse = PerspTrans(0,image_width,0,image_height,far,near);
-    Matrix<float> M_viewport = ViewportTrans(image_width,image_height);
-    Matrix<float> M = M_viewport * M_view;
+    Mat4f M_view = ViewTrans(camera_position, view_center, t);
+    Mat4f M_perse = PerspTrans(0,image_width,0,image_height,far,near);
+    Mat4f M_viewport = ViewportTrans(image_width,image_height);
+    Mat4f M = M_viewport * M_view;
     ShaderGlobal::M = M;
     //    Matrix<float> M = M_viewport * M_perse * M_view * M_model;
 //    cout << M_view << endl;
@@ -68,7 +68,7 @@ void Editor::nextFrame() {
 //    cout << M;
     Shader * shader = new Bling_Phong();
     ShaderGlobal::light_intensity = 2.3e8;
-    ShaderGlobal::light_position = m2v(v2m(Vec3f(10000,3000,10000)));
+    ShaderGlobal::light_position = Vec3f(10000,3000,10000);
     for (int i=0; i<model->nfaces(); i++) {
         shader -> vertex(i);
         drawer -> Triangle(i,shader,zbuffer);
@@ -77,6 +77,7 @@ void Editor::nextFrame() {
 //    drawer -> write_tga_file("output.tga");
     ShaderGlobal::current_drawer = drawer;
 }
+
 int Editor::run() {
     // Setup window
     glfwSetErrorCallback(glfw_error_callback);
@@ -150,7 +151,6 @@ int Editor::run() {
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     genTextureInit();
     nextFrame();
-    loadTextureFromMemory();
   // Main loop
 
     while (!glfwWindowShouldClose(window))
@@ -165,13 +165,19 @@ int Editor::run() {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-
-        nextFrame();
-
         if(show_image){
-            ImGui::Begin("OpenGL Texture Text");
-            ImGui::Text("pointer = %p", image_texture);
+            ImGui::Begin("Render result");
+            ImGui::Text("Texture pointer = %p", image_texture);
             ImGui::Text("size = %d x %d", image_width, image_height);
+            ImGui::SliderFloat("View Position x", &view_center.x, 0.0f, 1.0f);
+            ImGui::SliderFloat("View Position y", &view_center.y, 0.0f, 1.0f);
+            ImGui::SliderFloat("View Position z", &view_center.z, 0.0f, 1.0f);
+            ImGui::SliderFloat("Camera Position x", &camera_position.x, -1e5f, 1e5f);
+            ImGui::SliderFloat("Camera Position y", &camera_position.y, -1e5f, 1e5f);
+            ImGui::SliderFloat("Camera Position z", &camera_position.z, -1e5f, 1e5f);
+//            view_center.normalize();
+            nextFrame();
+            loadTextureFromMemory();
             ImGui::Image((void*)(intptr_t)image_texture, ImVec2(image_width, image_height));
             ImGui::End();
         }

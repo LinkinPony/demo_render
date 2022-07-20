@@ -1,13 +1,67 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
-//模板类无法将实现与定义分离
-
+//Don't use vector,it's incredible slow when you need to create tons of matrices.
+#include "memory.h"
 #include <cmath>
 #include <vector>
 #include <cassert>
 #include "geometry.h"
 #include <iostream>
 using std::vector;
+template <int n,class T> class Mat{
+public:
+    T A[n][n] = {};
+    Mat(){
+        memset(A,0,sizeof(A));
+    }
+    Mat(const Mat<n,T> & _matrix){
+        for(int i = 0;i < n;i++){
+            for(int j = 0;j < n;j++)A[i][j] = _matrix.A[i][j];
+        }
+    }
+    const T * operator [] (int idx) const{
+        return A[idx];
+    }
+    T * operator [] (int idx){
+        return A[idx];
+    }
+    Mat<n,T> operator * (const Mat<n,T> & B) const {
+        Mat<n,T> res;
+        for(int k = 0;k < n;k++){
+            for(int i = 0;i < n;i++){
+                for(int j = 0;j < n;j++){
+                    res[i][j]  = res[i][j] + A[i][k] * B[k][j];
+                }
+            }
+        }
+        return res;
+    }
+    static Mat<n,T> I(){
+        Mat<n,T>res;
+        for(int i = 0;i < n;i++)res[i][i] = 1;
+        return res;
+    }
+};
+
+typedef Mat<2,int> Mat2i;
+typedef Mat<2,float> Mat2f;
+typedef Mat<3,int> Mat3i;
+typedef Mat<3,float> Mat3f;
+typedef Mat<4,int> Mat4i;
+typedef Mat<4,float> Mat4f;
+
+template<typename T>
+Vec3<T> operator * (const Mat<4,T> & mat,const Vec3<T> & vec){
+    T tmp[4] = {};
+    for(int k = 0;k < 4;k++){
+        for(int i = 0;i < 4;i++){
+            tmp[i] += mat[i][k] * (k == 3?1:vec[k]);
+        }
+    }
+    return Vec3<T>(tmp[0]/tmp[3],tmp[1]/tmp[3],tmp[2]/tmp[3]);
+}
+
+
 template <class T> class Matrix{
 
 public:

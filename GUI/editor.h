@@ -26,7 +26,8 @@ protected:
     int image_height = 0;
     GLuint image_texture;//render result
     /* use for drawer */
-    Vec3f view_direction = Vec3f(1,1,1).normalize();//view_direction. should be normalized
+    Vec3f view_center = Vec3f(1, 1, 1);
+    Vec3f camera_position = Vec3f(1000,1000,1000);
     Drawer * drawer;
     Model * model;
     /* use for OpenGL texture */
