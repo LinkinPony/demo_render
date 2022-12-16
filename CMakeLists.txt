@@ -3,8 +3,10 @@ project(demo_render)
 set(CMAKE_CXX_STANDARD 20)
 #set(CMAKE_CXX_FLAGS “-Wall -Wextra”)
 #set(CMAKE_CXX_FLAGS_DEBUG “-g”)
+#set(CMAKE_CXX_FLAGS “-pthread”)
 set(CMAKE_CXX_FLAGS_RELEASE “-O2”)
 set(SOURCE_FILES main.cpp)
+
 include_directories(
         .
         include/
@@ -28,5 +30,7 @@ add_executable(
         thirdPartyLib/stb/stb_image.h
 )
 
-include_directories(GL)
-target_link_libraries(demo_render OPENGL32 glfw3)
+#include_directories(GL)
+#Windows: OPENGL32
+#Linux: GL
+target_link_libraries(demo_render glfw3 GL dl X11 pthread)
